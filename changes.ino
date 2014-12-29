@@ -1,7 +1,18 @@
 #include <MicroView.h>
 #include <avr/pgmspace.h>
 
-uint8_t settings[8] = {7, 23, 6, 4, 16, 3, 3, 4};
+boolean landscape = true;
+//landscape, big
+uint8_t settings[8] = {7, 24, 6, 4, 16, 3, 3, 4};
+//landscape, small
+//uint8_t settings[8] = {2, 22, 8, 4, 20, 4, 4, 4};
+
+//boolean landscape = false;
+//portrait, big
+//uint8_t settings[8] = {4, 11, 10, 6, 26, 5, 5, 6};
+//portrait, small
+//uint8_t settings[8] = {10, 14, 8, 4, 20, 4, 4, 4};
+
 uint8_t verticalOffset;
 uint8_t horizontalOffset;
 uint8_t halfWidth;
@@ -540,7 +551,12 @@ int freeRam () {
 
 void loop () {
   globalCounter = random(0, 64);
-  drawHexagramRotated(hexagramList[globalCounter]);
+  if(landscape) {
+    drawHexagram(hexagramList[globalCounter]);
+  } else {
+    drawHexagramRotated(hexagramList[globalCounter]);
+  }
+  
   strcpy_P(buffer, (char*)pgm_read_word(&(hexagramNames[globalCounter])));
   Serial.print("HexagramList[" + String(globalCounter) + "] " + String(buffer) + ": ");
   for(uint8_t count = 0; count < 6; count++) {
