@@ -170,6 +170,24 @@ void drawHexagram(uint8_t hexagram[]) {
   uView.display();
 }
 
+void drawHexagramRotated(uint8_t hexagram[]) {
+  uView.clear(PAGE);
+  for(uint8_t count = 0; count < 6; count++) {
+    if(hexagram[count] == 0) {
+          // if this line is split
+          uView.rectFill( horizontalOffset, 
+                    verticalOffset + count*height + count*seperatorHeight,  halfWidth,height );
+          uView.rectFill( horizontalOffset + halfWidth + gapWidth,
+                    verticalOffset + count*height + count*seperatorHeight, halfWidth, height );
+    } else {
+          // if this line is solid
+          uView.rectFill( horizontalOffset,
+                    verticalOffset + count*height + count*seperatorHeight, fullWidth, height );
+    }
+  }
+  uView.display();
+}
+
 void hexSetup() {
 
   //Hexagram 1 is named 乾 (qián), "Force". Other variations include "the creative", "strong action", "the key",  and "god".
@@ -522,7 +540,7 @@ int freeRam () {
 
 void loop () {
   globalCounter = random(0, 64);
-  drawHexagram(hexagramList[globalCounter]);
+  drawHexagramRotated(hexagramList[globalCounter]);
   strcpy_P(buffer, (char*)pgm_read_word(&(hexagramNames[globalCounter])));
   Serial.print("HexagramList[" + String(globalCounter) + "] " + String(buffer) + ": ");
   for(uint8_t count = 0; count < 6; count++) {
