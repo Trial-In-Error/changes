@@ -1,10 +1,6 @@
 #include <MicroView.h>
 #include <avr/pgmspace.h>
 
-//struct HEXAGRAM_TYPE {
-//  uint8_t hexagram[6];
-//};
-
 uint8_t settings[8] = {7, 23, 6, 4, 16, 3, 3, 4};
 uint8_t verticalOffset;
 uint8_t horizontalOffset;
@@ -18,145 +14,141 @@ uint8_t seperatorHeight;
 uint8_t hexagramList[64][6];
 uint8_t globalCounter = 0;
 
-//struct HEXAGRAM_TYPE generateHexagram() {
-//  globalCounter = random(1, 64);
-//  //globalCounter++;
-//  return hexagramList[globalCounter];
-//}
 
-  prog_char string_0[] PROGMEM = "Force";
-  prog_char string_1[] PROGMEM = "Field";
-  prog_char string_2[] PROGMEM = "Sprouting";
-  prog_char string_3[] PROGMEM = "Enveloping";
-  prog_char string_4[] PROGMEM = "Attending";
-  prog_char string_5[] PROGMEM = "Arguing";
-  prog_char string_6[] PROGMEM = "Leading";
-  prog_char string_7[] PROGMEM = "Grouping";
-  prog_char string_8[] PROGMEM = "Small Accumulating";
-  prog_char string_9[] PROGMEM = "Treading";
-  prog_char string_10[] PROGMEM = "Pervading";
-  prog_char string_11[] PROGMEM = "Obstruction";
-  prog_char string_12[] PROGMEM = "Concording People";
-  prog_char string_13[] PROGMEM = "Great Possessing";
-  prog_char string_14[] PROGMEM = "Humbling";
-  prog_char string_15[] PROGMEM = "Providing-For";
-  prog_char string_16[] PROGMEM = "Following";
-  prog_char string_17[] PROGMEM = "Correcting";
-  prog_char string_18[] PROGMEM = "Nearing";
-  prog_char string_19[] PROGMEM = "Viewing";
-  prog_char string_20[] PROGMEM = "Gnawing Bite";
-  prog_char string_21[] PROGMEM = "Adorning";
-  prog_char string_22[] PROGMEM = "Stripping";
-  prog_char string_23[] PROGMEM = "Returning";
-  prog_char string_24[] PROGMEM = "Without Embroiling";
-  prog_char string_25[] PROGMEM = "Great Accumulating";
-  prog_char string_26[] PROGMEM = "Swallowing";
-  prog_char string_27[] PROGMEM = "Great Exceeding";
-  prog_char string_28[] PROGMEM = "Gorge";
-  prog_char string_29[] PROGMEM = "Radiance";
-  prog_char string_30[] PROGMEM = "Conjoining";
-  prog_char string_31[] PROGMEM = "Persevering";
-  prog_char string_32[] PROGMEM = "Retiring";
-  prog_char string_33[] PROGMEM = "Great Invigorating";
-  prog_char string_34[] PROGMEM = "Prospering";
-  prog_char string_35[] PROGMEM = "Darkening of the Light";
-  prog_char string_36[] PROGMEM = "Dwelling People";
-  prog_char string_37[] PROGMEM = "Polarising";
-  prog_char string_38[] PROGMEM = "Limping";
-  prog_char string_39[] PROGMEM = "Taking-Apart";
-  prog_char string_40[] PROGMEM = "Diminishing";
-  prog_char string_41[] PROGMEM = "Augmenting";
-  prog_char string_42[] PROGMEM = "Displacement";
-  prog_char string_43[] PROGMEM = "Coupling";
-  prog_char string_44[] PROGMEM = "Clustering";
-  prog_char string_45[] PROGMEM = "Ascending";
-  prog_char string_46[] PROGMEM = "Confining";
-  prog_char string_47[] PROGMEM = "Welling";
-  prog_char string_48[] PROGMEM = "Skinning";
-  prog_char string_49[] PROGMEM = "Holding";
-  prog_char string_50[] PROGMEM = "Shake";
-  prog_char string_51[] PROGMEM = "Bound";
-  prog_char string_52[] PROGMEM = "Infiltrating";
-  prog_char string_53[] PROGMEM = "Converting the Maiden";
-  prog_char string_54[] PROGMEM = "Abounding";
-  prog_char string_55[] PROGMEM = "Sojourning";
-  prog_char string_56[] PROGMEM = "Ground";
-  prog_char string_57[] PROGMEM = "Open";
-  prog_char string_58[] PROGMEM = "Dispersing";
-  prog_char string_59[] PROGMEM = "Articulating";
-  prog_char string_60[] PROGMEM = "Center Returning";
-  prog_char string_61[] PROGMEM = "Small Exceeding";
-  prog_char string_62[] PROGMEM = "Already Fording";
-  prog_char string_63[] PROGMEM = "Not Yet Fording";
+prog_char string_0[] PROGMEM = "Force";
+prog_char string_1[] PROGMEM = "Field";
+prog_char string_2[] PROGMEM = "Sprouting";
+prog_char string_3[] PROGMEM = "Enveloping";
+prog_char string_4[] PROGMEM = "Attending";
+prog_char string_5[] PROGMEM = "Arguing";
+prog_char string_6[] PROGMEM = "Leading";
+prog_char string_7[] PROGMEM = "Grouping";
+prog_char string_8[] PROGMEM = "Small Accumulating";
+prog_char string_9[] PROGMEM = "Treading";
+prog_char string_10[] PROGMEM = "Pervading";
+prog_char string_11[] PROGMEM = "Obstruction";
+prog_char string_12[] PROGMEM = "Concording People";
+prog_char string_13[] PROGMEM = "Great Possessing";
+prog_char string_14[] PROGMEM = "Humbling";
+prog_char string_15[] PROGMEM = "Providing-For";
+prog_char string_16[] PROGMEM = "Following";
+prog_char string_17[] PROGMEM = "Correcting";
+prog_char string_18[] PROGMEM = "Nearing";
+prog_char string_19[] PROGMEM = "Viewing";
+prog_char string_20[] PROGMEM = "Gnawing Bite";
+prog_char string_21[] PROGMEM = "Adorning";
+prog_char string_22[] PROGMEM = "Stripping";
+prog_char string_23[] PROGMEM = "Returning";
+prog_char string_24[] PROGMEM = "Without Embroiling";
+prog_char string_25[] PROGMEM = "Great Accumulating";
+prog_char string_26[] PROGMEM = "Swallowing";
+prog_char string_27[] PROGMEM = "Great Exceeding";
+prog_char string_28[] PROGMEM = "Gorge";
+prog_char string_29[] PROGMEM = "Radiance";
+prog_char string_30[] PROGMEM = "Conjoining";
+prog_char string_31[] PROGMEM = "Persevering";
+prog_char string_32[] PROGMEM = "Retiring";
+prog_char string_33[] PROGMEM = "Great Invigorating";
+prog_char string_34[] PROGMEM = "Prospering";
+prog_char string_35[] PROGMEM = "Darkening of the Light";
+prog_char string_36[] PROGMEM = "Dwelling People";
+prog_char string_37[] PROGMEM = "Polarising";
+prog_char string_38[] PROGMEM = "Limping";
+prog_char string_39[] PROGMEM = "Taking-Apart";
+prog_char string_40[] PROGMEM = "Diminishing";
+prog_char string_41[] PROGMEM = "Augmenting";
+prog_char string_42[] PROGMEM = "Displacement";
+prog_char string_43[] PROGMEM = "Coupling";
+prog_char string_44[] PROGMEM = "Clustering";
+prog_char string_45[] PROGMEM = "Ascending";
+prog_char string_46[] PROGMEM = "Confining";
+prog_char string_47[] PROGMEM = "Welling";
+prog_char string_48[] PROGMEM = "Skinning";
+prog_char string_49[] PROGMEM = "Holding";
+prog_char string_50[] PROGMEM = "Shake";
+prog_char string_51[] PROGMEM = "Bound";
+prog_char string_52[] PROGMEM = "Infiltrating";
+prog_char string_53[] PROGMEM = "Converting the Maiden";
+prog_char string_54[] PROGMEM = "Abounding";
+prog_char string_55[] PROGMEM = "Sojourning";
+prog_char string_56[] PROGMEM = "Ground";
+prog_char string_57[] PROGMEM = "Open";
+prog_char string_58[] PROGMEM = "Dispersing";
+prog_char string_59[] PROGMEM = "Articulating";
+prog_char string_60[] PROGMEM = "Center Returning";
+prog_char string_61[] PROGMEM = "Small Exceeding";
+prog_char string_62[] PROGMEM = "Already Fording";
+prog_char string_63[] PROGMEM = "Not Yet Fording";
 
 
-  // Then set up a table to refer to your strings.
-  PROGMEM const char *hexagramNames[] =     // change "string_table" name to suit
-  {   
-    string_0,
-    string_1,
-    string_2,
-    string_3,
-    string_4,
-    string_5,
-    string_6,
-    string_7,
-    string_8,
-    string_9,
-    string_10,
-    string_11,
-    string_12,
-    string_13,
-    string_14,
-    string_15,
-    string_16,
-    string_17,
-    string_18,
-    string_19,
-    string_20,
-    string_21,
-    string_22,
-    string_23,
-    string_24,
-    string_25,
-    string_26,
-    string_27,
-    string_28,
-    string_29,
-    string_30,
-    string_31,
-    string_32,
-    string_33,
-    string_34,
-    string_35,
-    string_36,
-    string_37,
-    string_38,
-    string_39,
-    string_40,
-    string_41,
-    string_42,
-    string_43,
-    string_44,
-    string_45,
-    string_46,
-    string_47,
-    string_48,
-    string_49,
-    string_50,
-    string_51,
-    string_52,
-    string_53,
-    string_54,
-    string_55,
-    string_56,
-    string_57,
-    string_58,
-    string_59,
-    string_60,
-    string_61,
-    string_62,
-    string_63 };
+// Then set up a table to refer to your strings.
+PROGMEM const char *hexagramNames[] =     // change "string_table" name to suit
+{   
+  string_0,
+  string_1,
+  string_2,
+  string_3,
+  string_4,
+  string_5,
+  string_6,
+  string_7,
+  string_8,
+  string_9,
+  string_10,
+  string_11,
+  string_12,
+  string_13,
+  string_14,
+  string_15,
+  string_16,
+  string_17,
+  string_18,
+  string_19,
+  string_20,
+  string_21,
+  string_22,
+  string_23,
+  string_24,
+  string_25,
+  string_26,
+  string_27,
+  string_28,
+  string_29,
+  string_30,
+  string_31,
+  string_32,
+  string_33,
+  string_34,
+  string_35,
+  string_36,
+  string_37,
+  string_38,
+  string_39,
+  string_40,
+  string_41,
+  string_42,
+  string_43,
+  string_44,
+  string_45,
+  string_46,
+  string_47,
+  string_48,
+  string_49,
+  string_50,
+  string_51,
+  string_52,
+  string_53,
+  string_54,
+  string_55,
+  string_56,
+  string_57,
+  string_58,
+  string_59,
+  string_60,
+  string_61,
+  string_62,
+  string_63
+};
 
 char buffer[30];    // make sure this is large enough for the largest string it must hold
 
@@ -529,7 +521,7 @@ int freeRam () {
 }
 
 void loop () {
-  globalCounter = random(1, 64);
+  globalCounter = random(0, 64);
   drawHexagram(hexagramList[globalCounter]);
   strcpy_P(buffer, (char*)pgm_read_word(&(hexagramNames[globalCounter])));
   Serial.print("HexagramList[" + String(globalCounter) + "] " + String(buffer) + ": ");
