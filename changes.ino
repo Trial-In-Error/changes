@@ -185,15 +185,31 @@ void drawHexagramRotated(uint8_t hexagram[]) {
   uView.clear(PAGE);
   for(uint8_t count = 0; count < 6; count++) {
     if(hexagram[count] == 0) {
+      if(count >= 3) {
           // if this line is split
           uView.rectFill( horizontalOffset, 
-                    verticalOffset + count*height + count*seperatorHeight,  halfWidth,height );
+                    verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight,  halfWidth, height );
           uView.rectFill( horizontalOffset + halfWidth + gapWidth,
-                    verticalOffset + count*height + count*seperatorHeight, halfWidth, height );
+                    verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, halfWidth, height );
+      } else {
+          // if this line is split
+          uView.rectFill( horizontalOffset, 
+                    verticalOffset + count*height + count*gapHeight, halfWidth, height );
+          uView.rectFill( horizontalOffset + halfWidth + gapWidth,
+                    verticalOffset + count*height + count*gapHeight, halfWidth, height );
+      }
+
     } else {
+
+      if(count >= 3) {
           // if this line is solid
           uView.rectFill( horizontalOffset,
-                    verticalOffset + count*height + count*seperatorHeight, fullWidth, height );
+                    verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, fullWidth, height );
+      } else {
+          // if this line is solid
+          uView.rectFill( horizontalOffset,
+                    verticalOffset + count*height + count*gapHeight, fullWidth, height );
+      }
     }
   }
   uView.display();
@@ -551,7 +567,7 @@ int freeRam () {
 
 void loop () {
   globalCounter = random(0, 64);
-  if(landscape) {
+  if(!landscape) {
     drawHexagram(hexagramList[globalCounter]);
   } else {
     drawHexagramRotated(hexagramList[globalCounter]);
