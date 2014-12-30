@@ -166,62 +166,6 @@ PROGMEM const char *hexagramNames[] =     // change "string_table" name to suit
 
 char buffer[30];    // make sure this is large enough for the largest string it must hold
 
-void drawHexagram(uint8_t hexagram[]) {
-  uView.clear(PAGE);
-  for(uint8_t count = 0; count < 6; count++) {
-    if(hexagram[count] == 0) {
-      // if this line is split
-      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
-      horizontalOffset, height, halfWidth);
-      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
-      horizontalOffset + halfWidth + gapWidth, height, halfWidth);
-    } 
-    else {
-      // if this line is solid
-      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
-      horizontalOffset, height, fullWidth);
-    }
-  }
-  uView.display();
-}
-
-void drawHexagramRotated(uint8_t hexagram[]) {
-  uView.clear(PAGE);
-  for(uint8_t count = 0; count < 6; count++) {
-    if(hexagram[count] == 0) {
-      if(count >= 3) {
-        // if this line is split
-        uView.rectFill( horizontalOffset, 
-        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight,  halfWidth, height );
-        uView.rectFill( horizontalOffset + halfWidth + gapWidth,
-        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, halfWidth, height );
-      } 
-      else {
-        // if this line is split
-        uView.rectFill( horizontalOffset, 
-        verticalOffset + count*height + count*gapHeight, halfWidth, height );
-        uView.rectFill( horizontalOffset + halfWidth + gapWidth,
-        verticalOffset + count*height + count*gapHeight, halfWidth, height );
-      }
-
-    } 
-    else {
-
-      if(count >= 3) {
-        // if this line is solid
-        uView.rectFill( horizontalOffset,
-        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, fullWidth, height );
-      } 
-      else {
-        // if this line is solid
-        uView.rectFill( horizontalOffset,
-        verticalOffset + count*height + count*gapHeight, fullWidth, height );
-      }
-    }
-  }
-  uView.display();
-}
-
 void hexSetup() {
 
   //Hexagram 1 is named 乾 (qián), "Force". Other variations include "the creative", "strong action", "the key",  and "god".
@@ -643,10 +587,86 @@ int count_chars(const char* string, char ch)
   return c;
 }
 
+void fade(boolean brightening) {
+  if(brightening) {
+    uView.contrast(0);
+    for(int count = 0; count < 256; count++) {
+      uView.contrast(count);
+      delay(6);
+      uView.display();
+    }
+  } else {
+    uView.contrast(255);
+    for(int count = 0; count < 256; count++) {
+      uView.contrast(255 - count);
+      delay(6);
+      uView.display();
+    }
+  }
+}
+
+void drawHexagram(uint8_t hexagram[]) {
+  uView.clear(PAGE);
+  for(uint8_t count = 0; count < 6; count++) {
+    if(hexagram[count] == 0) {
+      // if this line is split
+      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
+      horizontalOffset, height, halfWidth);
+      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
+      horizontalOffset + halfWidth + gapWidth, height, halfWidth);
+    } 
+    else {
+      // if this line is solid
+      uView.rectFill( verticalOffset + count*height + count*seperatorHeight,
+      horizontalOffset, height, fullWidth);
+    }
+  }
+  //uView.display();
+  fade(true);
+}
+
+void drawHexagramRotated(uint8_t hexagram[]) {
+  uView.clear(PAGE);
+  for(uint8_t count = 0; count < 6; count++) {
+    if(hexagram[count] == 0) {
+      if(count >= 3) {
+        // if this line is split
+        uView.rectFill( horizontalOffset, 
+        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight,  halfWidth, height );
+        uView.rectFill( horizontalOffset + halfWidth + gapWidth,
+        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, halfWidth, height );
+      } 
+      else {
+        // if this line is split
+        uView.rectFill( horizontalOffset, 
+        verticalOffset + count*height + count*gapHeight, halfWidth, height );
+        uView.rectFill( horizontalOffset + halfWidth + gapWidth,
+        verticalOffset + count*height + count*gapHeight, halfWidth, height );
+      }
+
+    } 
+    else {
+
+      if(count >= 3) {
+        // if this line is solid
+        uView.rectFill( horizontalOffset,
+        verticalOffset + count*height + (count-1)*gapHeight + seperatorHeight, fullWidth, height );
+      } 
+      else {
+        // if this line is solid
+        uView.rectFill( horizontalOffset,
+        verticalOffset + count*height + count*gapHeight, fullWidth, height );
+      }
+    }
+  }
+  //uView.display();
+  fade(true);
+}
+
 void drawText() {
   uView.clear(PAGE);
   char * tokenPointer;
-  int linesNeeded = count_chars(buffer, ' ') + count_chars(buffer, '-');
+  int linesNeeded = count_chars(buffer, ' ') + count_chars(buffer, '-') + 1;
   int lineCounter = 0;
   //string parse
   tokenPointer = strtok(buffer, " -");
@@ -662,6 +682,8 @@ void drawText() {
   else {
     // print it normally
     uView.setCursor((uView.getLCDWidth() - uView.getFontWidth()*String(tokenPointer).length() - String(tokenPointer).length() + 1)/2, (uView.getLCDHeight() - uView.getFontHeight()*linesNeeded)/2);
+    Serial.println("x: "+String((uView.getLCDWidth() - uView.getFontWidth()*String(tokenPointer).length() - String(tokenPointer).length() + 1)/2));
+    Serial.println("y: "+String((uView.getLCDHeight() - uView.getFontHeight()*linesNeeded)/2));
     uView.print(String(tokenPointer));
   }
 
@@ -689,14 +711,31 @@ void drawText() {
   //center vertically and horizontally
 
   //uView.print(String(buffer));
-  uView.display();
+  fade(true);
 }
 
 void loop () {
-  //globalCounter = random(0, 64);
-  //globalCounter = 25;
+  globalCounter = random(0, 64);
+  if(!landscape) {
+    drawHexagram(hexagramList[globalCounter]);
+  } else {
+    drawHexagramRotated(hexagramList[globalCounter]);
+  }
 
-  while(Serial.available() > 0) {
+  strcpy_P(buffer, (char*)pgm_read_word(&(hexagramNames[globalCounter])));
+  Serial.print("HexagramList[" + String(globalCounter) + "] " + String(buffer) + ": ");
+  for(uint8_t count = 0; count < 6; count++) {
+    Serial.print(String(hexagramList[globalCounter][count]) + " ");    
+  }
+  Serial.print("["+String(freeRam())+"]\n");
+  delay(1000);
+  fade(false);
+  delay(1000);
+  drawText();
+  delay(1000);
+  fade(false);
+  delay(250);
+  /*while(Serial.available() > 0) {
     char recieved = Serial.read();
     inData += recieved; 
 
@@ -721,8 +760,6 @@ void loop () {
       delay(2000);
       inData = "";
     }
-  }
+  }*/
 
 }
-
-
