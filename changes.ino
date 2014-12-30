@@ -565,19 +565,52 @@ int freeRam () {
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
+int count_chars(const char* string, char ch)
+{
+  int c = 0;
+  while (*string) c += *(string++) == ch;
+  return c;
+}
+
+void drawText() {
+  uView.clear(PAGE);
+  char * tokenPointer;
+  int linesNeeded = count_chars(buffer, ' ') + count_chars(buffer, '-');
+  int lineCounter = 0;
+  //string parse
+  tokenPointer = strtok(buffer, " -");
+  uView.setCursor((uView.getLCDWidth() - uView.getFontWidth()*String(tokenPointer).length())/2, (uView.getLCDHeight() - uView.getFontHeight()*linesNeeded)/2);
+  uView.print(String(tokenPointer));
+  while(tokenPointer != NULL) {
+    lineCounter++;
+    tokenPointer = strtok(NULL, " -");
+    if(tokenPointer != NULL) {
+      uView.setCursor((uView.getLCDWidth() - uView.getFontWidth()*String(tokenPointer).length())/2, (uView.getLCDHeight() - uView.getFontHeight()*linesNeeded)/2 + uView.getFontHeight()*lineCounter);
+      uView.print(String(tokenPointer));
+    }
+  }
+  
+  //center vertically and horizontally
+  
+  //uView.print(String(buffer));
+  uView.display();
+}
+
 void loop () {
   globalCounter = random(0, 64);
+  //globalCounter = 35;
   if(!landscape) {
     drawHexagram(hexagramList[globalCounter]);
   } else {
     drawHexagramRotated(hexagramList[globalCounter]);
   }
-  
   strcpy_P(buffer, (char*)pgm_read_word(&(hexagramNames[globalCounter])));
   Serial.print("HexagramList[" + String(globalCounter) + "] " + String(buffer) + ": ");
   for(uint8_t count = 0; count < 6; count++) {
     Serial.print(String(hexagramList[globalCounter][count]) + " ");    
   }
   Serial.print("["+String(freeRam())+"]\n");
-  delay(500);
+  delay(2000);
+  drawText();
+  delay(2000);
 }
