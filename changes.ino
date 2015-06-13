@@ -564,6 +564,7 @@ void setup() {
   Serial.begin(9600);
   hexSetup();
   delay(500);
+  randomSeed(analogRead(A0));
   Serial.print(F("VVVVVVVVVV "));
   for(uint8_t count = 0; count < 6; count++) {
     Serial.print(String(hexagramList[0][count]) + " ");    
